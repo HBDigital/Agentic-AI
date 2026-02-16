@@ -80,12 +80,16 @@ This system implements a **7-agent autonomous pipeline** that:
 ## Project Structure
 
 ```
-GCC_Hack/
+Agentic-AI/
+├── .env                       # Environment variables (DB credentials)
+├── .streamlit/                # Streamlit configuration
 ├── config/
+│   ├── __init__.py
 │   ├── db_config.py           # MS SQL connection settings
 │   ├── model_config.py        # ML model hyperparameters
 │   └── thresholds.py          # Business rule thresholds
 ├── agents/
+│   ├── __init__.py
 │   ├── sense_agent.py         # Step 1: Data ingestion & features
 │   ├── predict_agent.py       # Step 2: ML model training & prediction
 │   ├── decide_agent.py        # Step 3: Blocking strategy decisions
@@ -96,8 +100,10 @@ GCC_Hack/
 ├── models/
 │   ├── demand_model.pkl       # Trained demand spike predictor
 │   ├── sellout_model.pkl      # Trained sell-out predictor
-│   └── price_model.pkl        # Trained price movement predictor
+│   ├── price_model.pkl        # Trained price movement predictor
+│   └── label_encoders.pkl     # Fitted label encoders
 ├── utils/
+│   ├── __init__.py
 │   ├── db_utils.py            # Database connection & query helpers
 │   ├── feature_engineering.py # Feature creation pipelines
 │   └── evaluation.py          # Model evaluation metrics
@@ -192,7 +198,7 @@ python main.py --week-start 2026-02-10 --report-only
 
 | Argument | Description | Default |
 |----------|-------------|---------|
-| `--week-start` | Target week start date (Monday) | `2026-02-10` |
+| `--week-start` | Target week start date (Monday) | `2026-02-16` |
 | `--train` | Force retrain ML models | `False` |
 | `--report-only` | Skip execution, generate report only | `False` |
 
@@ -285,8 +291,8 @@ streamlit run dashboard.py
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `DEMAND_SPIKE_THRESHOLD` | 1.3 | Min demand multiplier |
-| `SELLOUT_PROBABILITY_THRESHOLD` | 0.55 | Min sell-out probability |
-| `MIN_BLOCKING_SCORE` | 0.50 | Min composite score |
+| `SELLOUT_PROBABILITY_THRESHOLD` | 0.40 | Min sell-out probability |
+| `MIN_BLOCKING_SCORE` | 0.70 | Min composite score |
 | `MAX_BLOCK_FRACTION` | 0.40 | Max inventory fraction to block |
 
 ### Rebooking Decision Thresholds
